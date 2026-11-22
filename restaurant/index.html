@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Casa Olivo | Italian Trattoria</title>
+<meta name="description" content="Casa Olivo is a family-style Italian trattoria serving fresh pasta, wood-fired pizza and seasonal dishes. Demo website.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#f7f1e8;--paper:#fffaf3;--ink:#2b1d16;--muted:#6f5c50;--terra:#b5532f;--terra-d:#8f3f22;--olive:#6b7a3a;--line:#e4d7c6}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--cream);line-height:1.6}
+img{max-width:100%;display:block}
+a{color:inherit}
+.wrap{width:min(1120px,100% - 40px);margin-inline:auto}
+.serif{font-family:"Cormorant Garamond",Georgia,serif}
+.demo{background:var(--ink);color:#f3e6d6;font-size:13px;text-align:center;padding:6px 12px}
+header{position:sticky;top:0;z-index:20;background:rgba(247,241,232,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:700;text-decoration:none;letter-spacing:.5px}
+.logo span{color:var(--terra)}
+.links{display:flex;gap:28px;align-items:center;list-style:none}
+.links a{text-decoration:none;font-size:15px;font-weight:500}
+.links a:hover{color:var(--terra)}
+.btn{display:inline-block;background:var(--terra);color:#fff;text-decoration:none;padding:12px 24px;border-radius:999px;font-weight:600;font-size:15px;border:0;cursor:pointer;transition:background .2s}
+.btn:hover{background:var(--terra-d)}
+.btn.ghost{background:transparent;border:1.5px solid currentColor}
+.btn.ghost:hover{background:rgba(255,255,255,.12)}
+.burger{display:none;background:none;border:0;font-size:26px;cursor:pointer;color:var(--ink)}
+.hero{position:relative;min-height:min(88vh,820px);display:grid;place-items:center;text-align:center;color:#fff;background:url(img/hero.jpg) center/cover}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(28,15,10,.35),rgba(28,15,10,.75))}
+.hero .inner{position:relative;z-index:1;padding:80px 20px}
+.eyebrow{text-transform:uppercase;letter-spacing:4px;font-size:13px;color:#f3c9a6}
+.hero h1{font-family:"Cormorant Garamond",serif;font-size:clamp(46px,8vw,96px);line-height:1;margin:16px 0 18px;font-weight:600}
+.hero p{max-width:560px;margin:0 auto 32px;font-size:18px;color:#f6e9dc}
+.hero .ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+section{padding:96px 0}
+.title{font-family:"Cormorant Garamond",serif;font-size:clamp(36px,5vw,54px);line-height:1.1;margin:10px 0 18px;font-weight:600}
+.lead{color:var(--muted);max-width:620px}
+.about{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
+.about .art{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:40px;aspect-ratio:1/1;display:grid;place-items:center}
+.stats{display:flex;gap:40px;margin-top:32px;flex-wrap:wrap}
+.stats b{font-family:"Cormorant Garamond",serif;font-size:42px;color:var(--terra);display:block;line-height:1}
+.stats span{font-size:14px;color:var(--muted)}
+.menu{background:var(--paper);border-block:1px solid var(--line)}
+.center{text-align:center}.center .lead{margin-inline:auto}
+.tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:36px 0 40px}
+.tab{background:transparent;border:1.5px solid var(--line);padding:10px 22px;border-radius:999px;font:500 15px Inter,sans-serif;cursor:pointer;color:var(--ink)}
+.tab[aria-selected=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.panel{display:none;grid-template-columns:1fr 1fr;gap:8px 56px;max-width:920px;margin:0 auto}
+.panel.active{display:grid}
+.dish{padding:18px 0;border-bottom:1px dashed var(--line)}
+.dish .row{display:flex;align-items:baseline;gap:10px}
+.dish h4{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:600}
+.dish .dots{flex:1;border-bottom:1px dotted #c9b8a3;transform:translateY(-5px)}
+.dish .price{font-weight:600;color:var(--terra)}
+.dish p{font-size:14px;color:var(--muted)}
+.tag{font-size:11px;background:#eef0e2;color:var(--olive);padding:2px 8px;border-radius:999px;margin-left:6px;font-weight:600;vertical-align:middle}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:32px;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(43,29,22,.08)}
+.card h3{font-family:"Cormorant Garamond",serif;font-size:28px;margin:18px 0 8px}
+.card p{color:var(--muted);font-size:15px}
+.visit{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:40px}
+.hours li{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);list-style:none}
+form{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+form .full{grid-column:1/-1}
+label{font-size:13px;font-weight:600;display:block;margin-bottom:6px}
+input,select,textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;font:15px Inter,sans-serif;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--terra)}
+.ok{display:none;background:#eef0e2;color:var(--olive);padding:14px;border-radius:12px;font-weight:600;margin-top:14px}
+footer{background:var(--ink);color:#d9c9b8;padding:56px 0 30px}
+.foot{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px}
+footer h5{color:#fff;font-size:15px;margin-bottom:12px}
+footer p,footer a{font-size:14px;text-decoration:none}
+.copy{border-top:1px solid #4a372c;margin-top:40px;padding-top:20px;font-size:13px;text-align:center;color:#a8937f}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+.reveal.in{opacity:1;transform:none}
+@media (max-width:860px){
+ .links{display:none;position:absolute;top:68px;left:0;right:0;flex-direction:column;background:var(--cream);padding:20px;border-bottom:1px solid var(--line)}
+ .links.open{display:flex}
+ .burger{display:block}
+ .about,.visit,.panel.active{grid-template-columns:1fr}
+ .cards{grid-template-columns:1fr}
+ .foot{grid-template-columns:1fr}
+ form{grid-template-columns:1fr}
+ section{padding:72px 0}
+}
+</style>
+</head>
+<body>
+<div class="demo">Demo website for a fictional business. Design sample by Malek Shabakgi.</div>
+<header>
+ <nav class="wrap nav">
+  <a href="#" class="logo">Casa <span>Olivo</span></a>
+  <button class="burger" aria-label="Open menu" onclick="document.querySelector('.links').classList.toggle('open')">&#9776;</button>
+  <ul class="links">
+   <li><a href="#about">Our Story</a></li>
+   <li><a href="#menu">Menu</a></li>
+   <li><a href="#favourites">Favourites</a></li>
+   <li><a href="#visit">Visit</a></li>
+   <li><a href="#visit" class="btn">Book a Table</a></li>
+  </ul>
+ </nav>
+</header>
+
+<section class="hero">
+ <div class="inner">
+  <div class="eyebrow">Italian Trattoria &middot; Since 2009</div>
+  <h1>Made by hand,<br>shared at the table.</h1>
+  <p>Fresh pasta rolled every morning, wood-fired pizza and a wine list from small family vineyards.</p>
+  <div class="ctas"><a href="#visit" class="btn">Reserve a Table</a><a href="#menu" class="btn ghost">See the Menu</a></div>
+ </div>
+</section>
+
+<section id="about">
+ <div class="wrap about">
+  <div class="reveal">
+   <div class="eyebrow" style="color:var(--terra)">Our Story</div>
+   <h2 class="title">A little corner of Tuscany in your neighbourhood</h2>
+   <p class="lead">Casa Olivo started as a six-table kitchen run by one family and a very old pasta machine. We still cook the way we did then: simple recipes, seasonal produce and olive oil we import ourselves.</p>
+   <div class="stats">
+    <div><b>15+</b><span>years serving</span></div>
+    <div><b>40</b><span>dishes made in-house</span></div>
+    <div><b>4.8</b><span>average guest rating</span></div>
+   </div>
+  </div>
+  <div class="art reveal" aria-hidden="true">
+   <svg viewBox="0 0 200 200" width="80%"><g fill="none" stroke="#b5532f" stroke-width="3" stroke-linecap="round">
+    <path d="M100 30c-30 40-30 90 0 140M100 30c30 40 30 90 0 140" stroke="#6b7a3a"/>
+    <ellipse cx="70" cy="80" rx="16" ry="9" transform="rotate(-35 70 80)" fill="#6b7a3a" stroke="none"/>
+    <ellipse cx="132" cy="70" rx="16" ry="9" transform="rotate(35 132 70)" fill="#6b7a3a" stroke="none"/>
+    <ellipse cx="66" cy="125" rx="16" ry="9" transform="rotate(-30 66 125)" fill="#6b7a3a" stroke="none"/>
+    <ellipse cx="135" cy="118" rx="16" ry="9" transform="rotate(30 135 118)" fill="#6b7a3a" stroke="none"/>
+    <circle cx="100" cy="100" r="88" stroke="#e4d7c6"/>
+    <circle cx="86" cy="150" r="9" fill="#2b1d16" stroke="none"/><circle cx="112" cy="156" r="9" fill="#2b1d16" stroke="none"/>
+   </g></svg>
+  </div>
+ </div>
+</section>
+
+<section id="menu" class="menu">
+ <div class="wrap center">
+  <div class="eyebrow" style="color:var(--terra)">The Menu</div>
+  <h2 class="title">Seasonal, simple, generous</h2>
+  <p class="lead">Our menu changes with the market. Ask your server about today's specials.</p>
+  <div class="tabs" role="tablist">
+   <button class="tab" role="tab" aria-selected="true" data-p="antipasti">Antipasti</button>
+   <button class="tab" role="tab" aria-selected="false" data-p="pasta">Pasta</button>
+   <button class="tab" role="tab" aria-selected="false" data-p="pizza">Pizza</button>
+   <button class="tab" role="tab" aria-selected="false" data-p="dolci">Dolci</button>
+  </div>
+ </div>
+ <div class="wrap">
+  <div class="panel active" id="antipasti"></div>
+  <div class="panel" id="pasta"></div>
+  <div class="panel" id="pizza"></div>
+  <div class="panel" id="dolci"></div>
+ </div>
+</section>
+
+<section id="favourites">
+ <div class="wrap center">
+  <div class="eyebrow" style="color:var(--terra)">Guest Favourites</div>
+  <h2 class="title">Three reasons people come back</h2>
+  <div class="cards">
+   <div class="card reveal"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#b5532f" stroke-width="2.5"><circle cx="24" cy="24" r="18"/><path d="M12 22c6 4 18 4 24 0M14 28c5 3 15 3 20 0"/></svg><h3>Fresh Pasta Daily</h3><p>Every shape is rolled and cut by hand each morning, from tagliatelle to filled ravioli.</p></div>
+   <div class="card reveal"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#b5532f" stroke-width="2.5"><path d="M24 6L6 40h36z"/><circle cx="20" cy="30" r="2.5" fill="#b5532f"/><circle cx="28" cy="24" r="2.5" fill="#b5532f"/><circle cx="27" cy="34" r="2.5" fill="#b5532f"/></svg><h3>Wood-Fired Oven</h3><p>Pizza baked at 450&deg;C in ninety seconds, with dough rested for 48 hours.</p></div>
+   <div class="card reveal"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#b5532f" stroke-width="2.5"><path d="M16 6h16l-2 14a6 6 0 0 1-12 0z"/><path d="M24 26v14M17 42h14"/></svg><h3>Family Vineyards</h3><p>A short, honest wine list from small producers we know by name.</p></div>
+  </div>
+ </div>
+</section>
+
+<section id="visit" style="padding-top:0">
+ <div class="wrap visit">
+  <div class="box reveal">
+   <div class="eyebrow" style="color:var(--terra)">Visit Us</div>
+   <h2 class="title" style="font-size:40px">Opening hours</h2>
+   <ul class="hours">
+    <li><span>Monday</span><span>Closed</span></li>
+    <li><span>Tuesday to Thursday</span><span>5 pm to 10 pm</span></li>
+    <li><span>Friday and Saturday</span><span>12 pm to 11 pm</span></li>
+    <li><span>Sunday</span><span>12 pm to 9 pm</span></li>
+   </ul>
+   <p style="margin-top:24px"><b>Address:</b> 128 Harbour Lane (fictional)<br><b>Phone:</b> (555) 010-2040<br><b>Email:</b> hello@casaolivo.example</p>
+  </div>
+  <div class="box reveal">
+   <div class="eyebrow" style="color:var(--terra)">Reservations</div>
+   <h2 class="title" style="font-size:40px">Book a table</h2>
+   <form id="book">
+    <div><label for="n">Name</label><input id="n" required placeholder="Your name"></div>
+    <div><label for="p">Phone</label><input id="p" type="tel" required placeholder="Phone number"></div>
+    <div><label for="d">Date</label><input id="d" type="date" required></div>
+    <div><label for="g">Guests</label><select id="g"><option>2 guests</option><option>3 guests</option><option>4 guests</option><option>5 guests</option><option>6+ guests</option></select></div>
+    <div class="full"><label for="m">Notes</label><textarea id="m" rows="3" placeholder="Allergies, birthdays, seating preferences"></textarea></div>
+    <div class="full"><button class="btn" type="submit" style="width:100%">Request Reservation</button></div>
+   </form>
+   <div class="ok" id="ok">Thank you! This is a demo, so no booking was sent. On a live site you would get a confirmation by email.</div>
+  </div>
+ </div>
+</section>
+
+<footer>
+ <div class="wrap foot">
+  <div><a href="#" class="logo" style="color:#fff">Casa <span>Olivo</span></a><p style="margin-top:12px;max-width:340px">Family-style Italian cooking, fresh pasta and wood-fired pizza.</p></div>
+  <div><h5>Explore</h5><p><a href="#menu">Menu</a><br><a href="#about">Our Story</a><br><a href="#visit">Reservations</a></p></div>
+  <div><h5>Contact</h5><p>(555) 010-2040<br>hello@casaolivo.example</p></div>
+ </div>
+ <div class="wrap copy">Casa Olivo is a fictional restaurant. Demo website designed by Malek Shabakgi.</div>
+</footer>
+
+<script>
+const MENU={
+ antipasti:[["Bruschetta al Pomodoro","Grilled sourdough, heirloom tomato, basil, garlic",9,"V"],["Burrata e Prosciutto","Creamy burrata, 18-month prosciutto, olive oil",16],["Calamari Fritti","Lightly fried squid, lemon aioli",14],["Arancini","Saffron risotto balls, mozzarella centre",11,"V"]],
+ pasta:[["Tagliatelle al Ragu","Slow-cooked beef and pork ragu, parmigiano",21],["Cacio e Pepe","Tonnarelli, pecorino romano, black pepper",18,"V"],["Ravioli di Ricotta","Ricotta and spinach, sage brown butter",20,"V"],["Linguine alle Vongole","Clams, white wine, chilli, parsley",24]],
+ pizza:[["Margherita","San Marzano tomato, fior di latte, basil",15,"V"],["Diavola","Spicy salami, chilli honey, mozzarella",18],["Quattro Formaggi","Four cheeses, walnuts, rosemary",19,"V"],["Funghi e Tartufo","Wild mushrooms, truffle cream, thyme",21,"V"]],
+ dolci:[["Tiramisu della Casa","Espresso-soaked savoiardi, mascarpone",10,"V"],["Panna Cotta","Vanilla bean, berry compote",9,"V"],["Cannoli Siciliani","Ricotta, pistachio, orange zest",9,"V"],["Affogato","Vanilla gelato, hot espresso",7,"V"]]};
+for(const [k,items] of Object.entries(MENU)){
+ document.getElementById(k).innerHTML=items.map(([n,d,p,t])=>`<div class="dish"><div class="row"><h4>${n}${t?'<span class="tag">Vegetarian</span>':''}</h4><span class="dots"></span><span class="price">$${p}</span></div><p>${d}</p></div>`).join('');
+}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===b));
+ document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));
+}));
+document.querySelectorAll('.links a').forEach(a=>a.addEventListener('click',()=>document.querySelector('.links').classList.remove('open')));
+document.getElementById('book').addEventListener('submit',e=>{e.preventDefault();e.target.style.display='none';document.getElementById('ok').style.display='block'});
+document.getElementById('d').min=new Date().toISOString().split('T')[0];
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
