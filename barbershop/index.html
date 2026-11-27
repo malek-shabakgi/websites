@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ember &amp; Oak | Barbershop and Grooming</title>
+<meta name="description" content="Ember & Oak is a modern barbershop for precise cuts, beard sculpting and hot towel shaves. Book online in under a minute. Demo website.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* 60-30-10: charcoal 60 / graphite + bone 30 / brass 10 */
+:root{--bg:#0f0f10;--panel:#181716;--panel2:#1f1d1b;--line:#2b2926;--bone:#ece6dc;--muted:#9b948a;--brass:#c9a063;--brass-d:#a9824a;--ok:#7fbf8f}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Manrope,system-ui,sans-serif;background:var(--bg);color:var(--bone);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:6px}
+.wrap{width:min(1200px,100% - 40px);margin-inline:auto}
+.serif{font-family:"Instrument Serif",Georgia,serif;font-weight:400}
+.demo{background:var(--brass);color:#1a140b;font-size:13px;font-weight:600;text-align:center;padding:6px 12px}
+/* header */
+header{position:sticky;top:0;z-index:30;background:rgba(15,15,16,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;letter-spacing:.5px}
+.logo .serif{font-size:26px;letter-spacing:0}
+.links{display:flex;gap:30px;list-style:none;align-items:center}
+.links a{text-decoration:none;font-size:14px;color:var(--muted);font-weight:500;transition:color .2s}
+.links a:hover{color:var(--bone)}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--brass);color:#16110a;text-decoration:none;border:0;border-radius:999px;padding:13px 24px;font-weight:700;font-size:15px;cursor:pointer;transition:background .2s,transform .2s}
+.btn:hover{background:#d8b178;transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--bone);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--muted);background:rgba(255,255,255,.03)}
+.burger{display:none;background:none;border:0;font-size:24px;cursor:pointer}
+/* hero */
+.hero{position:relative;padding:88px 0 72px;background:url(img/hero.jpg) center/cover;overflow:hidden}
+.hero .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--brass);font-weight:700}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--brass)}
+h1{font-size:clamp(48px,7.4vw,104px);line-height:.95;letter-spacing:-2.5px;margin:22px 0 24px;font-weight:800}
+h1 em{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;color:var(--muted);letter-spacing:-1px}
+.lead{font-size:18px;color:#c9c2b7;max-width:520px;margin-bottom:34px}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+.proof{display:flex;gap:36px;margin-top:48px;flex-wrap:wrap}
+.proof b{display:block;font-size:30px;font-weight:800;line-height:1.1}
+.proof span{font-size:13px;color:var(--muted)}
+.emblem{aspect-ratio:1;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;position:relative;background:radial-gradient(circle at 50% 40%,rgba(201,160,99,.14),transparent 62%)}
+.emblem::after{content:"";position:absolute;inset:18px;border-radius:50%;border:1px dashed rgba(201,160,99,.28);animation:spin 60s linear infinite}
+.emblem svg{width:62%}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* marquee */
+.marquee{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;background:var(--panel)}
+.track{display:inline-block;padding:18px 0;animation:mq 34s linear infinite}
+.track span{font-family:"Instrument Serif",serif;font-size:30px;margin:0 26px;color:var(--muted)}
+.track i{color:var(--brass);font-style:normal}
+@keyframes mq{to{transform:translateX(-50%)}}
+section{padding:110px 0}
+.sh{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:48px;flex-wrap:wrap}
+h2{font-size:clamp(36px,5vw,64px);line-height:1;letter-spacing:-1.5px;font-weight:800;max-width:720px}
+h2 em{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;color:var(--muted)}
+.sub{color:var(--muted);max-width:420px}
+/* bento services */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(200px,auto);gap:16px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px;display:flex;flex-direction:column;justify-content:space-between;transition:border-color .25s,transform .25s}
+.tile:hover{border-color:#4a4339;transform:translateY(-3px)}
+.tile.big{grid-column:span 2;grid-row:span 2;background:linear-gradient(160deg,#211d18,#161514)}
+.tile.wide{grid-column:span 2}
+.tile h3{font-size:22px;font-weight:700;margin-bottom:6px}
+.tile.big h3{font-family:"Instrument Serif",serif;font-weight:400;font-size:46px;line-height:1}
+.tile p{color:var(--muted);font-size:15px}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:22px;font-size:14px;color:var(--muted)}
+.price{font-size:26px;font-weight:800;color:var(--bone)}
+.tile.big .price{color:var(--brass)}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--brass);border:1px solid rgba(201,160,99,.4);padding:4px 10px;border-radius:999px;margin-bottom:18px;align-self:flex-start}
+.tile ul{list-style:none;margin:18px 0 0;color:#cfc8bd;font-size:15px}
+.tile li{padding:7px 0;border-bottom:1px solid var(--line)}
+.tile li::before{content:"\2014";color:var(--brass);margin-right:10px}
+/* booking */
+.booking{background:var(--panel);border-block:1px solid var(--line)}
+.bk{display:grid;grid-template-columns:1.6fr 1fr;gap:28px;align-items:start}
+.step{margin-bottom:34px}
+.step h4{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-weight:700}
+.step h4 b{color:var(--brass);margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:10px}
+.opt{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 16px;cursor:pointer;text-align:left;transition:border-color .2s,background .2s}
+.opt small{display:block;color:var(--muted);font-size:12px}
+.opt:hover{border-color:#4a4339}
+.opt[aria-pressed=true]{border-color:var(--brass);background:rgba(201,160,99,.08)}
+.opt:disabled{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+.day{min-width:76px;text-align:center}
+.day b{display:block;font-size:22px}
+.summary{position:sticky;top:96px;background:var(--bg);border:1px solid var(--line);border-radius:22px;padding:28px}
+.summary h3{font-family:"Instrument Serif",serif;font-weight:400;font-size:34px;margin-bottom:16px}
+.srow{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+.srow span:first-child{color:var(--muted)}
+.stot{display:flex;justify-content:space-between;margin:18px 0 22px;font-size:20px;font-weight:800}
+.stot span:last-child{color:var(--brass)}
+.summary .btn{width:100%;justify-content:center}
+.summary .btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.note{font-size:12px;color:var(--muted);margin-top:12px;text-align:center}
+.okmsg{display:none;text-align:center;padding:12px 0}
+.okmsg .tick{width:56px;height:56px;border-radius:50%;border:1px solid var(--brass);color:var(--brass);display:grid;place-items:center;font-size:26px;margin:0 auto 14px}
+/* team */
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.barber{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--panel)}
+.portrait{aspect-ratio:4/4.2;display:grid;place-items:center;background:radial-gradient(circle at 50% 30%,#2a251f,#131212 70%)}
+.portrait span{font-family:"Instrument Serif",serif;font-size:110px;color:var(--brass);opacity:.85}
+.barber .info{padding:22px 24px}
+.barber h3{font-size:20px}
+.barber p{color:var(--muted);font-size:14px}
+/* ritual steps */
+.ritual{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.rs{padding:32px 28px;border-right:1px solid var(--line)}
+.rs:last-child{border-right:0}
+.rs .n{font-family:"Instrument Serif",serif;font-size:56px;color:var(--brass);line-height:1}
+.rs h3{font-size:18px;margin:14px 0 6px}
+.rs p{color:var(--muted);font-size:14px}
+/* reviews */
+.reviews{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:16px}
+.rv{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px}
+.rv.feat{background:var(--brass);color:#17120b;border-color:var(--brass)}
+.rv.feat p{font-family:"Instrument Serif",serif;font-size:30px;line-height:1.15}
+.rv p{margin-bottom:18px}
+.rv small{color:var(--muted)}
+.rv.feat small{color:#4a3a22}
+.stars{color:var(--brass);letter-spacing:3px;margin-bottom:12px}
+.rv.feat .stars{color:#17120b}
+/* faq + visit */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+details{border-bottom:1px solid var(--line);padding:20px 0}
+summary{cursor:pointer;list-style:none;font-weight:700;font-size:17px;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--brass);font-size:22px;line-height:1;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--muted);margin-top:10px}
+.visit{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:32px}
+.hours li{list-style:none;display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+.hours li.today{color:var(--brass);font-weight:700}
+.map{margin-top:22px;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+/* final cta */
+.final{text-align:center;padding:120px 0;background:radial-gradient(ellipse at 50% 120%,rgba(201,160,99,.18),transparent 60%)}
+.final h2{margin:0 auto 18px;max-width:820px}
+.final .sub{margin:0 auto 34px}
+footer{border-top:1px solid var(--line);padding:40px 0 100px;color:var(--muted);font-size:14px}
+.foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.mbar{display:none}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+@media(max-width:960px){
+ .links{display:none;position:absolute;top:72px;left:0;right:0;flex-direction:column;background:var(--bg);padding:22px;border-bottom:1px solid var(--line)}
+ .links.open{display:flex}.burger{display:block}
+ .hero .grid,.bk,.two{grid-template-columns:1fr}
+ .emblem{max-width:300px;margin:0 auto}
+ .bento{grid-template-columns:1fr 1fr}
+ .tile.big{grid-column:span 2;grid-row:auto}
+ .team,.reviews{grid-template-columns:1fr}
+ .portrait{aspect-ratio:16/8}.portrait span{font-size:80px}
+ .ritual{grid-template-columns:1fr 1fr}
+ .rs:nth-child(2){border-right:0}.rs:nth-child(-n+2){border-bottom:1px solid var(--line)}
+ .summary{position:static}
+ section{padding:80px 0}
+ .mbar{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:40;justify-content:space-between;align-items:center;background:rgba(24,23,22,.95);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 8px 8px 20px;font-size:14px}
+}
+@media(max-width:560px){.bento{grid-template-columns:1fr}.tile.big,.tile.wide{grid-column:auto}.ritual{grid-template-columns:1fr}.rs{border-right:0;border-bottom:1px solid var(--line)}.proof{gap:24px}}
+</style>
+</head>
+<body>
+<div class="demo">Demo website for a fictional barbershop. Designed by Malek Shabakgi.</div>
+
+<header>
+ <nav class="wrap nav" aria-label="Main">
+  <a href="#" class="logo" aria-label="Ember and Oak home">
+   <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="#c9a063" stroke-width="2"><circle cx="16" cy="16" r="14"/><path d="M10 21c4-1 7-5 8-11 1 4 3 6 5 7" stroke-linecap="round"/></svg>
+   <span class="serif">Ember &amp; Oak</span>
+  </a>
+  <button class="burger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+  <ul class="links">
+   <li><a href="#services">Services</a></li>
+   <li><a href="#book">Booking</a></li>
+   <li><a href="#barbers">Barbers</a></li>
+   <li><a href="#visit">Visit</a></li>
+   <li><a href="#book" class="btn" style="padding:10px 20px;color:#16110a">Book now</a></li>
+  </ul>
+ </nav>
+</header>
+
+<main>
+<section class="hero" style="padding-top:96px">
+ <div class="wrap grid">
+  <div>
+   <span class="eyebrow">Barbershop &middot; Est. 2014</span>
+   <h1>Sharp cuts.<br><em>Quiet confidence.</em></h1>
+   <p class="lead">Precision haircuts, sculpted beards and the hot towel shave your week has been missing. Walk in tired, walk out sharp.</p>
+   <div class="ctas"><a href="#book" class="btn">Book your chair &rarr;</a><a href="#services" class="btn ghost">View services</a></div>
+   <div class="proof">
+    <div><b>4.9</b><span>average rating (sample)</span></div>
+    <div><b>12 yrs</b><span>behind the chair</span></div>
+    <div><b>45 min</b><span>never rushed</span></div>
+   </div>
+  </div>
+  <div class="emblem reveal" aria-hidden="true">
+   <svg viewBox="0 0 200 200" fill="none" stroke="#c9a063" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M58 140L128 52c6-7 16-8 22-2s5 15-2 21L66 148"/>
+    <path d="M66 148l-14 14c-4 4-10 4-13 0s-3-9 1-13l18-9"/>
+    <path d="M118 66l18 18" opacity=".6"/>
+    <circle cx="60" cy="60" r="16"/><circle cx="60" cy="102" r="16"/>
+    <path d="M73 70l52 22M73 92l52-22"/>
+    <path d="M150 128h22M150 138h22M150 148h22M150 158h22" opacity=".5"/>
+   </svg>
+  </div>
+ </div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
+
+<section id="services">
+ <div class="wrap">
+  <div class="sh">
+   <h2>Services, <em>done properly.</em></h2>
+   <p class="sub">Every visit includes a consultation, a hot towel finish and a styling tip you can actually repeat at home.</p>
+  </div>
+  <div class="bento">
+   <article class="tile big reveal">
+    <div><span class="tag">Most booked</span><h3>The Full Ritual</h3><p style="margin-top:12px">Our signature: haircut, beard sculpt and a straight razor hot towel shave, finished with a scalp massage.</p>
+     <ul><li>Consultation and wash</li><li>Precision cut and style</li><li>Beard sculpt or hot towel shave</li><li>Scalp massage and finish</li></ul></div>
+    <div class="meta"><span>90 min</span><span class="price">$75</span></div>
+   </article>
+   <article class="tile reveal"><div><h3>Classic Cut</h3><p>Scissor or clipper cut, shaped to your head and hair type.</p></div><div class="meta"><span>45 min</span><span class="price">$38</span></div></article>
+   <article class="tile reveal"><div><h3>Skin Fade</h3><p>Seamless fade from skin to length, crisp line-up.</p></div><div class="meta"><span>50 min</span><span class="price">$42</span></div></article>
+   <article class="tile reveal"><div><h3>Beard Sculpt</h3><p>Shape, line and condition, finished with oil.</p></div><div class="meta"><span>30 min</span><span class="price">$28</span></div></article>
+   <article class="tile reveal"><div><h3>Hot Towel Shave</h3><p>Traditional straight razor shave, three hot towels.</p></div><div class="meta"><span>40 min</span><span class="price">$35</span></div></article>
+   <article class="tile wide reveal" style="background:var(--panel2)"><div><h3>Father &amp; Son</h3><p>Two classic cuts, side by side. Under-12s only for the second chair.</p></div><div class="meta"><span>75 min</span><span class="price">$60</span></div></article>
+   <article class="tile wide reveal"><div><h3>Grey Blending</h3><p>Subtle, natural colour to soften grey. Never flat, never obvious.</p></div><div class="meta"><span>40 min</span><span class="price">$45</span></div></article>
+  </div>
+ </div>
+</section>
+
+<section id="book" class="booking">
+ <div class="wrap">
+  <div class="sh"><h2>Book in <em>under a minute.</em></h2><p class="sub">Pick a service, a barber and a time. You will get a reminder the day before.</p></div>
+  <div class="bk">
+   <div>
+    <div class="step"><h4><b>01</b>Service</h4><div class="opts" id="svcOpts"></div></div>
+    <div class="step"><h4><b>02</b>Barber</h4><div class="opts" id="barOpts"></div></div>
+    <div class="step"><h4><b>03</b>Day</h4><div class="opts" id="dayOpts"></div></div>
+    <div class="step"><h4><b>04</b>Time</h4><div class="opts" id="timeOpts"></div></div>
+   </div>
+   <aside class="summary" aria-live="polite">
+    <div id="sumBody">
+     <h3>Your booking</h3>
+     <div class="srow"><span>Service</span><span id="sSvc">Choose a service</span></div>
+     <div class="srow"><span>Barber</span><span id="sBar">Any barber</span></div>
+     <div class="srow"><span>When</span><span id="sWhen">Choose a time</span></div>
+     <div class="srow"><span>Duration</span><span id="sDur">-</span></div>
+     <div class="stot"><span>Total</span><span id="sTot">$0</span></div>
+     <button class="btn" id="confirm" disabled>Confirm booking</button>
+     <p class="note">Pay in the shop. Free cancellation up to 12 hours before.</p>
+    </div>
+    <div class="okmsg" id="okmsg"><div class="tick">&#10003;</div><h3 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:32px">You're booked.</h3><p id="okTxt" style="color:var(--muted);margin:8px 0 18px"></p><button class="btn ghost" id="again">Make another booking</button></div>
+   </aside>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="wrap">
+  <div class="sh"><h2>The ritual, <em>step by step.</em></h2></div>
+  <div class="ritual reveal">
+   <div class="rs"><div class="n">01</div><h3>Consult</h3><p>Two minutes to understand your hair, your routine and the look you want.</p></div>
+   <div class="rs"><div class="n">02</div><h3>Cut</h3><p>Precision work, checked from every angle. No rushing to the next client.</p></div>
+   <div class="rs"><div class="n">03</div><h3>Finish</h3><p>Hot towel, straight razor line-up and products matched to your hair.</p></div>
+   <div class="rs"><div class="n">04</div><h3>Maintain</h3><p>A simple tip and a reminder when it is time for the next visit.</p></div>
+  </div>
+ </div>
+</section>
+
+<section id="barbers" style="padding-top:0">
+ <div class="wrap">
+  <div class="sh"><h2>Meet the <em>barbers.</em></h2><p class="sub">Three specialists, each with their own chair and their own regulars.</p></div>
+  <div class="team" id="team"></div>
+ </div>
+</section>
+
+<section style="padding-top:0">
+ <div class="wrap">
+  <div class="sh"><h2>Regulars <em>say it best.</em></h2><p class="sub">Sample reviews for this demo website.</p></div>
+  <div class="reviews">
+   <div class="rv feat reveal"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"Best fade I have had in years, and the hot towel shave is worth the trip on its own."</p><small>Sample client &middot; Full Ritual</small></div>
+   <div class="rv reveal"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"Booked online in a minute, in and out on time. They remembered how I like it."</p><small>Sample client &middot; Classic Cut</small></div>
+   <div class="rv reveal"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"Took my son for his first proper haircut. Patient, friendly, great result."</p><small>Sample client &middot; Father &amp; Son</small></div>
+  </div>
+ </div>
+</section>
+
+<section id="visit" style="padding-top:0">
+ <div class="wrap two">
+  <div>
+   <div class="sh" style="margin-bottom:20px"><h2>Good to <em>know.</em></h2></div>
+   <details open><summary>Do you take walk-ins?</summary><p>Yes, when a chair is free. Booking online guarantees your time, especially on Fridays and Saturdays.</p></details>
+   <details><summary>How early should I arrive?</summary><p>Five minutes is perfect. If you are more than 10 minutes late we may need to shorten or move your appointment.</p></details>
+   <details><summary>Can I cancel or change my booking?</summary><p>Free cancellation up to 12 hours before. Use the link in your confirmation email.</p></details>
+   <details><summary>Do you cut kids' hair?</summary><p>Yes, from age 4. The Father &amp; Son package is our most popular weekend booking.</p></details>
+  </div>
+  <div class="visit reveal">
+   <span class="eyebrow">Visit us</span>
+   <ul class="hours" id="hours" style="margin-top:16px"></ul>
+   <p style="margin-top:18px;color:#cfc8bd">27 Foundry Street (fictional)<br>(555) 019-4410 &middot; hello@emberandoak.example</p>
+   <div class="map" aria-hidden="true">
+    <svg viewBox="0 0 400 180" width="100%" style="display:block;background:#141312">
+     <g stroke="#2b2926" stroke-width="10" fill="none"><path d="M0 60h400M0 130h400M90 0v180M250 0v180M330 0l-60 180"/></g>
+     <g stroke="#232120" stroke-width="4"><path d="M0 95h400M170 0v180"/></g>
+     <circle cx="250" cy="95" r="22" fill="rgba(201,160,99,.18)"/><circle cx="250" cy="95" r="8" fill="#c9a063"/>
+    </svg>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="final">
+ <div class="wrap">
+  <span class="eyebrow" style="justify-content:center">Your chair is waiting</span>
+  <h2 style="margin-top:18px">Look sharp <em>this week.</em></h2>
+  <p class="sub">Most weekend slots go by Thursday. Grab yours now.</p>
+  <a href="#book" class="btn">Book your chair &rarr;</a>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap foot">
+  <span class="serif" style="font-size:24px;color:var(--bone)">Ember &amp; Oak</span>
+  <span>Ember &amp; Oak is a fictional barbershop. Demo website designed by Malek Shabakgi.</span>
+ </div>
+</footer>
+
+<div class="mbar"><span>Next free chair: <b id="nextFree" style="color:var(--brass)">today</b></span><a href="#book" class="btn" style="padding:10px 18px">Book now</a></div>
+
+<script>
+const SVC=[["Classic Cut",38,45],["Skin Fade",42,50],["Beard Sculpt",28,30],["Hot Towel Shave",35,40],["The Full Ritual",75,90],["Grey Blending",45,40]];
+const BAR=[["Any barber","Fastest availability"],["Leo Marsh","Fades and textures"],["Sami Haddad","Beards and shaves"],["Theo Grant","Classic scissor cuts"]];
+const $=id=>document.getElementById(id);
+$('track').innerHTML=Array(2).fill(SVC.map(s=>`<span>${s[0]}</span><i>&#10022;</i>`).join('')).join('');
+$('team').innerHTML=BAR.slice(1).map(([n,r],i)=>`<article class="barber reveal"><div class="portrait"><span>${n.split(' ').map(w=>w[0]).join('')}</span></div><div class="info"><h3>${n}</h3><p>${r} &middot; ${[9,7,12][i]} years</p></div></article>`).join('');
+// hours with today highlighted
+const H=[["Sunday","10:00 to 16:00"],["Monday","Closed"],["Tuesday","10:00 to 20:00"],["Wednesday","10:00 to 20:00"],["Thursday","10:00 to 21:00"],["Friday","09:00 to 21:00"],["Saturday","09:00 to 18:00"]];
+const td=new Date().getDay();
+$('hours').innerHTML=[1,2,3,4,5,6,0].map(i=>`<li class="${i===td?'today':''}"><span>${H[i][0]}${i===td?' (today)':''}</span><span>${H[i][1]}</span></li>`).join('');
+// booking state
+const st={svc:null,bar:0,day:null,time:null};
+function group(el,items,key,render){el.innerHTML=items.map((it,i)=>`<button class="opt ${key==='day'?'day':''}" aria-pressed="false" data-i="${i}">${render(it,i)}</button>`).join('');
+ el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{el.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed',x===b));st[key]=+b.dataset.i;if(key==='day'||key==='bar'){st.time=null;slots()}sum()})}
+group($('svcOpts'),SVC,'svc',s=>`${s[0]}<small>${s[2]} min &middot; $${s[1]}</small>`);
+group($('barOpts'),BAR,'bar',b=>`${b[0]}<small>${b[1]}</small>`);
+$('barOpts').querySelector('.opt').setAttribute('aria-pressed','true');
+const days=[];for(let i=0;days.length<7;i++){const d=new Date();d.setDate(d.getDate()+i);if(d.getDay()!==1)days.push(d)}
+group($('dayOpts'),days,'day',d=>`<small>${d.toLocaleDateString('en-US',{weekday:'short'})}</small><b>${d.getDate()}</b><small>${d.toLocaleDateString('en-US',{month:'short'})}</small>`);
+const TIMES=["10:00","10:45","11:30","12:15","13:30","14:15","15:00","15:45","16:30","17:15","18:00","18:45"];
+function busy(t,i){const seed=(st.day??0)*7+(st.bar??0)*3+i;return (seed*37)%5===0}
+function slots(){const el=$('timeOpts');if(st.day==null){el.innerHTML='<span style="color:var(--muted);font-size:14px">Choose a day first.</span>';return}
+ const isToday=days[st.day].toDateString()===new Date().toDateString(),now=new Date().getHours()+new Date().getMinutes()/60;
+ el.innerHTML=TIMES.map((t,i)=>{const h=+t.slice(0,2)+(+t.slice(3))/60;const off=busy(t,i)||(isToday&&h<=now+0.5);return `<button class="opt" aria-pressed="false" data-i="${i}" ${off?'disabled aria-label="'+t+' unavailable"':''}>${t}</button>`}).join('');
+ el.querySelectorAll('.opt:not(:disabled)').forEach(b=>b.onclick=()=>{el.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed',x===b));st.time=+b.dataset.i;sum()})}
+slots();
+function sum(){const s=SVC[st.svc];$('sSvc').textContent=s?s[0]:'Choose a service';$('sBar').textContent=BAR[st.bar][0];
+ $('sDur').textContent=s?s[2]+' min':'-';$('sTot').textContent='$'+(s?s[1]:0);
+ $('sWhen').textContent=st.day!=null&&st.time!=null?days[st.day].toLocaleDateString('en-US',{weekday:'short',day:'numeric',month:'short'})+', '+TIMES[st.time]:'Choose a time';
+ $('confirm').disabled=!(s&&st.day!=null&&st.time!=null)}
+$('confirm').onclick=()=>{$('okTxt').innerHTML=`${SVC[st.svc][0]} with ${BAR[st.bar][0]}<br>${$('sWhen').textContent}<br><br>This is a demo, so no booking was made.`;$('sumBody').style.display='none';$('okmsg').style.display='block'};
+$('again').onclick=()=>{$('sumBody').style.display='';$('okmsg').style.display='none'};
+// next free label
+$('nextFree').textContent=days[0].toDateString()===new Date().toDateString()&&new Date().getHours()<18?'today':days[days[0].toDateString()===new Date().toDateString()?1:0].toLocaleDateString('en-US',{weekday:'long'});
+// nav
+const bg=document.querySelector('.burger'),ln=document.querySelector('.links');
+bg.onclick=()=>{const o=ln.classList.toggle('open');bg.setAttribute('aria-expanded',o)};
+ln.querySelectorAll('a').forEach(a=>a.onclick=()=>{ln.classList.remove('open');bg.setAttribute('aria-expanded',false)});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
